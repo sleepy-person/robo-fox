@@ -54,7 +54,10 @@ def Update(dt):
         redfox.append(gameObj(e_redfox, randint(128,896), randint(128,896)))
         if abs(redfox[-1].pos_x - curr_x) > 320 or abs(redfox[-1].pos_y - curr_y) > 320:
             redfox.remove(-1)
-    
+    for rf in redfox:
+        rf.update()
+        if abs(rf.pos_x - curr_x) > 320 or abs(rf.pos_y - curr_y) > 320:
+            redfox.remove(rf)
 
     
 
