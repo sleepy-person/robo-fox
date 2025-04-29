@@ -7,6 +7,7 @@ import RetroPy.AB2Cont
 p_fox = LoadSprite("/rpg/assets/finalfox.rs8")
 p_foxrun = LoadSprite("/rpg/assets/finalfoxrun.rs8")
 p_foxattack = LoadSprite("/rpg/assets/ArcticFox_Attack.rs8")
+b_burrow = LoadSprite("/rpg/assets/Burrow.rs8")
 e_hare = LoadSprite("/rpg/assets/Arctic_Hare.rs8")
 e_bush = LoadSprite("/rpg/assets/Berry_Bush.rs8")
 e_lemming = LoadSprite("/rpg/assets/Lemming.rs8")
@@ -26,6 +27,7 @@ i_warmth = LoadSprite("/rpg/assets/Fire.rs8")
 i_hunger = LoadSprite("/rpg/assets/Hunger.rs8")
 hare, bush, lemming, geese, cod = [], [], [], [], []
 redfox, owl, eagle, bear = [], [], [], []
+burrows = []
 health, maxhealth, hunger, maxhunger, warmth, maxwarmth = 5, 10, 6, 10, 4, 10              '''change this later'''
 
 CurrentPhase = 1
@@ -72,6 +74,14 @@ def Update(dt):
     
     prevmove=move
 
+    if kb.readB == 0:
+        for b in burrow:
+            if b.collider(player):
+        elif len(burrow) < 5:
+            #change sprite
+            burrow.append(gameOBj(b_burrow), curr_x, curr_y)
+            
+
     
     '''if kb.readA == 0:
         player.sprite(p_foxattack,70)
@@ -103,9 +113,10 @@ def Update(dt):
 
     #Hare spawn rate
     if (random.random() * 100) < ((10 * 3 + CurrentPhase * 8) ** dt):
-        hare.append(gameObj(e_hare, randint(128,896), randint(128,896)))
+        hare.append(gameObj(e_hare), randint(128,896), randint(128,896)))
         if abs(hare[-1].pos_x - curr_x) > 320 or abs(hare[-1].pos_y - curr_y) > 320:
             hare.remove(-1)
+        #Read tile its on
     for h in hare:
         h.update()
         if RandomVariable % 10 == 0:
@@ -114,9 +125,10 @@ def Update(dt):
 
     #Lemming spawn rate
     if (random.random() * 100) < ((16 * 3 + CurrentPhase * 8) ** dt):
-        lemming.append(gameObj(e_lemming, randint(128,896), randint(128,896)))
+        lemming.append(gameObj(e_lemming), randint(128,896), randint(128,896)))
         if abs(lemming[-1].pos_x - curr_x) > 320 or abs(lemming[-1].pos_y - curr_y) > 320:
             lemming.remove(-1)
+        #Read tile its on
     for lemon in lemming:
         lemon.update()
         if RandomVariable % 10 == 0:
@@ -125,9 +137,10 @@ def Update(dt):
                 
     #Bush 
     if (random.random() * 100) < ((20 * 3 + CurrentPhase * 8) ** dt):
-        bush.append(gameObj(e_bush, randint(128,896), randint(128,896)))
+        bush.append(gameObj(e_bush), randint(128,896), randint(128,896)))
         if abs(bush[-1].pos_x - curr_x) > 320 or abs(bush[-1].pos_y - curr_y) > 320:
             bush.remove(-1)
+        #Read tile its on
     for bus in bush:
         bus.update()
         if RandomVariable % 10 == 0:
@@ -136,9 +149,10 @@ def Update(dt):
 
     #Geese 
     if (random.random() * 100) < ((4 * 3 + CurrentPhase * 8) ** dt):
-        geese.append(gameObj(e_geese, randint(128,896), randint(128,896)))
+        geese.append(gameObj(e_geese), randint(128,896), randint(128,896)))
         if abs(geese[-1].pos_x - curr_x) > 320 or abs(geese[-1].pos_y - curr_y) > 320:
             geese.remove(-1)
+        #Read tile its on
     for gee in geese:
         gee.update()
         if RandomVariable % 10 == 0:
@@ -147,7 +161,7 @@ def Update(dt):
                 
     #RedFox spawn rate
     if (random.random() * 100) < ((4 * 3 + CurrentPhase * 5) ** dt):
-        redfox.append(gameObj(e_redfox, randint(128,896), randint(128,896)))
+        redfox.append(gameObj(e_redfox), randint(128,896), randint(128,896)))
         if abs(redfox[-1].pos_x - curr_x) > 320 or abs(redfox[-1].pos_y - curr_y) > 320:
             redfox.remove(-1)
     for rf in redfox:
@@ -158,7 +172,7 @@ def Update(dt):
 
     #PolarBear spawn rate
     if (random.random() * 100) < ((1 * 3 + CurrentPhase * 5) ** dt):
-        bear.append(gameObj(e_bear, randint(128,896), randint(128,896)))
+        bear.append(gameObj(e_bear), randint(128,896), randint(128,896)))
         if abs(bear[-1].pos_x - curr_x) > 320 or abs(bear[-1].pos_y - curr_y) > 320:
             bear.remove(-1)
     for b in bear:
@@ -169,7 +183,7 @@ def Update(dt):
                 
     #Owl spawn rate
     if (random.random() * 100) < ((2 * 3 + CurrentPhase * 5) ** dt):
-        owl.append(gameObj(e_owl, randint(128,896), randint(128,896)))
+        owl.append(gameObj(e_owl), randint(128,896), randint(128,896)))
         if abs(owl[-1].pos_x - curr_x) > 320 or abs(owl[-1].pos_y - curr_y) > 320:
             owl.remove(-1)
     for o in owl:
@@ -180,7 +194,7 @@ def Update(dt):
 
     #Eagle spawn rate
     if (random.random() * 100) < ((2 * 3 + CurrentPhase * 5) ** dt):
-        eagle.append(gameObj(e_eagle, randint(128,896), randint(128,896)))
+        eagle.append(gameObj(e_eagle), randint(128,896), randint(128,896)))
         if abs(eagle[-1].pos_x - curr_x) > 320 or abs(eagle[-1].pos_y - curr_y) > 320:
             eagle.remove(-1)
     for e in eagle:
