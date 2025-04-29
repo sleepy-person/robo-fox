@@ -8,6 +8,8 @@ p_fox = LoadSprite("/rpg/assets/finalfox.rs8")
 p_foxrun = LoadSprite("/rpg/assets/finalfoxrun.rs8")
 e_redfox = LoadSprite("/rpg/assets/Red_Fox.rs8")
 e_redfoxattack = LoadSprite("/rpg/assets/Red_Fox_Attack.rs8")
+redfox = []
+CurrentPhase = 1
 player=gameObj(p_fox,112,120,70,currNdx=0)
 curr_x,curr_y=1024,1024
 prevmove,move,dirr=0,0,0
@@ -46,6 +48,15 @@ def Update(dt):
             player.sprite(p_fox,70)
     
     prevmove=move
+
+    #RedFox spawn rate
+    if (random.random() * 100) < ((4 * 3 + CurrentPhase * 5) ** dt):
+        redfox.append(gameObj(e_redfox, randint(128,896), randint(128,896)))
+        if abs(redfox[-1].pos_x - curr_x) > 320 or abs(redfox[-1].pos_y - curr_y) > 320:
+            redfox.remove(-1)
+    
+
+    
 
 # =======================================================================================
 def Draw(dt):
