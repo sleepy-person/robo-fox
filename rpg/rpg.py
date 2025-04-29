@@ -6,9 +6,19 @@ import RetroPy.AB2Cont
 
 p_fox = LoadSprite("/rpg/assets/finalfox.rs8")
 p_foxrun = LoadSprite("/rpg/assets/finalfoxrun.rs8")
+e_arctichare = LoadSprite("/rpg/assets/Arctic_Hare.rs8")
+e_berrybush = LoadSprite("/rpg/assets/Berry_Bush.rs8")
+e_lemming = LoadSprite("/rpg/assets/Lemming.rs8")
 e_redfox = LoadSprite("/rpg/assets/Red_Fox.rs8")
 e_redfoxattack = LoadSprite("/rpg/assets/Red_Fox_Attack.rs8")
-redfox = []
+e_owl = LoadSprite("/rpg/assets/Owl.rs8")
+e_owlattack = LoadSprite("/rpg/assets/Owl_Attack.rs8")
+e_eagle = LoadSprite("/rpg/assets/Eagle.rs8")
+e_eagleattack = LoadSprite("/rpg/assets/Eagle_Attack.rs8")
+e_bear = LoadSprite("/rpg/assets/Polar_Bear.rs8")
+e_bearattack = LoadSprite("/rpg/assets/Polar_Bear_Attack.rs8")
+hare, bush, lemming = [], [], []
+redfox, owl, eagle, bear = [], [], [], []
 CurrentPhase = 1
 player=gameObj(p_fox,112,120,70,currNdx=0)
 curr_x,curr_y=1024,1024
