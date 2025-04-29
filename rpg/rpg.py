@@ -19,6 +19,7 @@ e_bear = LoadSprite("/rpg/assets/Polar_Bear.rs8")
 e_bearattack = LoadSprite("/rpg/assets/Polar_Bear_Attack.rs8")
 hare, bush, lemming = [], [], []
 redfox, owl, eagle, bear = [], [], [], []
+health, maxhealth, hunger, maxhunger, warmth, maxwarmth = 5, 10, 6, 10, 4, 10              '''change this later'''
 
 CurrentPhase = 1
 RandomVariable = 0
@@ -145,8 +146,17 @@ def Update(dt):
 def Draw(dt):
     global dtt, move, curr_x, curr_y
     draw.clear()
+    
     player.draw()
+    draw.filled_rect(180,-180,maxhealth*4,7,5)
+    draw.filled_rect(180,-180,health*4,7,11)
+    draw.filled_rect(180,-200,maxwarmth*4,7,5)
+    draw.filled_rect(180,-200,warmth*4,7,11)
+    sraw.filled_rect(180,-220,maxhunger*4,7,5)
+    draw.filled_rect(180,-220,hunger*4,7,11)
+    
     draw.text(str(dt), 200, 0, 7)
+
     
 # =======================================================================================
 # =======================================================================================               
