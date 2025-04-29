@@ -75,8 +75,10 @@ def Update(dt):
     prevmove=move
 
     if kb.readB == 0:
-        for b in burrow:
-            if b.collider(player):
+        for row in burrow:
+            if row.collider(player):
+                pass
+                #go to den
         elif len(burrow) < 5:
             #change sprite
             burrow.append(gameOBj(b_burrow), curr_x, curr_y)
