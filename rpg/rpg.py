@@ -9,11 +9,11 @@ player=gameObj(p_fox,112,120,70,currNdx=0)
 curr_x,curr_y=1024,1024
 prevmove,move,dirr=0,0,0
 mapp=[[random.randint(0,2) for _ in range(64)] for _ in range(64)]
-snow_snow = LoadSprite("/rpg/snow-snow.rs8")
+snow_snow = LoadSprite("/rpg/assets/snow-snow.rs8")
 snow=sprite(snow_snow)
-lake_lake = LoadSprite("/rpg/lake.rs8")
+lake_lake = LoadSprite("/rpg/assets/lake.rs8")
 lake=sprite(lake_lake)
-br_br = LoadSprite("/rpg/branches.rs8")
+br_br = LoadSprite("/rpg/assets/branches.rs8")
 br=sprite(br_br)
 objs=[snow,lake,br]
 
