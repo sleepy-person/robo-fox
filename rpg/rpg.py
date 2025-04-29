@@ -12,6 +12,7 @@ e_bush = LoadSprite("/rpg/assets/Berry_Bush.rs8")
 e_lemming = LoadSprite("/rpg/assets/Lemming.rs8")
 e_geese = LoadSprite("/rpg/assets/Geese.rs8")
 e_geeseflying = LoadSprite("/rpg/assets/Geese_Flying.rs8")
+e_cod = LoadSprite("/rpg/assets/Cod.rs8")
 e_redfox = LoadSprite("/rpg/assets/Red_Fox.rs8")
 e_redfoxattack = LoadSprite("/rpg/assets/Red_Fox_Attack.rs8")
 e_owl = LoadSprite("/rpg/assets/Owl.rs8")
@@ -23,7 +24,7 @@ e_bearattack = LoadSprite("/rpg/assets/Polar_Bear_Attack.rs8")
 i_health = LoadSprite("/rpg/assets/Health.rs8")
 i_warmth = LoadSprite("/rpg/assets/Fire.rs8")
 i_hunger = LoadSprite("/rpg/assets/Hunger.rs8")
-hare, bush, lemming, geese = [], [], [], []
+hare, bush, lemming, geese, cod = [], [], [], [], []
 redfox, owl, eagle, bear = [], [], [], []
 health, maxhealth, hunger, maxhunger, warmth, maxwarmth = 5, 10, 6, 10, 4, 10              '''change this later'''
 
