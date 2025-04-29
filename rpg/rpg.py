@@ -6,9 +6,12 @@ import RetroPy.AB2Cont
 
 p_fox = LoadSprite("/rpg/assets/finalfox.rs8")
 p_foxrun = LoadSprite("/rpg/assets/finalfoxrun.rs8")
+p_foxattack = LoadSprite("/rpg/assets/ArcticFox_Attack.rs8")
 e_hare = LoadSprite("/rpg/assets/Arctic_Hare.rs8")
 e_bush = LoadSprite("/rpg/assets/Berry_Bush.rs8")
 e_lemming = LoadSprite("/rpg/assets/Lemming.rs8")
+e_geese = LoadSprite("/rpg/assets/Geese.rs8")
+e_geeseflying = LoadSprite("/rpg/assets/Geese_Flying.rs8")
 e_redfox = LoadSprite("/rpg/assets/Red_Fox.rs8")
 e_redfoxattack = LoadSprite("/rpg/assets/Red_Fox_Attack.rs8")
 e_owl = LoadSprite("/rpg/assets/Owl.rs8")
@@ -20,7 +23,7 @@ e_bearattack = LoadSprite("/rpg/assets/Polar_Bear_Attack.rs8")
 i_health = LoadSprite("/rpg/assets/Health.rs8")
 i_warmth = LoadSprite("/rpg/assets/Fire.rs8")
 i_hunger = LoadSprite("/rpg/assets/Hunger.rs8")
-hare, bush, lemming = [], [], []
+hare, bush, lemming, geese = [], [], [], []
 redfox, owl, eagle, bear = [], [], [], []
 health, maxhealth, hunger, maxhunger, warmth, maxwarmth = 5, 10, 6, 10, 4, 10              '''change this later'''
 
@@ -34,6 +37,9 @@ def clampmove(x,y):
     global curr_x, curr_y
     curr_x+= x if (curr_x+x>=120) and (curr_x+x<=1790) else 0
     curr_y+= y if (curr_y+y>=120) and (curr_y+y<=1790) else 0
+
+#def DealDamage(Object, Damage Dealt):
+#    
 
 def Update(dt):
     global dtt, move, prevmove, curr_x, curr_y, dirr
@@ -64,6 +70,35 @@ def Update(dt):
             player.sprite(p_fox,70)
     
     prevmove=move
+
+    
+    '''if kb.readA == 0:
+        player.sprite(p_foxattack,70)
+        for h in hare:
+            if h.collider(player):
+                DealDamage(hare[h], random.randint(1,4))
+        for lemon in lemming:
+            if lemon.collider(player):
+                DealDamage(lemming[lemon], random.randint(1,4))
+        for bus in bush:
+            if bus.collider(player):
+                DealDamage(bush[bus], random.randint(1,4))
+        for gee in geese:
+            if gee.collider(player):
+                DealDamage(geese[gee], random.randint(1,4))
+        for rf in redfox:
+            if rf.collider(player):
+                DealDamage(redfox[rf], random.randint(1,4))
+        for bea in bear:
+            if bea.collider(player):
+                DealDamage(bear[bea], random.randint(1,4))
+        for ow in owl:
+            if ow.collider(player):
+                DealDamage(owl[ow], random.randint(1,4))
+        for ag in eagle:
+            if ag.collider(player):
+                DealDamage(eagle[ag], random.randint(1,4))
+    '''            
 
     #Hare spawn rate
     if (random.random() * 100) < ((10 * 3 + CurrentPhase * 8) ** dt):
@@ -97,6 +132,17 @@ def Update(dt):
         if RandomVariable % 10 == 0:
             if abs(bus.pos_x - curr_x) > 320 or abs(bus.pos_y - curr_y) > 320:
                 bush.remove(bus)
+
+    #Geese 
+    if (random.random() * 100) < ((4 * 3 + CurrentPhase * 8) ** dt):
+        geese.append(gameObj(e_geese, randint(128,896), randint(128,896)))
+        if abs(geese[-1].pos_x - curr_x) > 320 or abs(geese[-1].pos_y - curr_y) > 320:
+            geese.remove(-1)
+    for gee in geese:
+        gee.update()
+        if RandomVariable % 10 == 0:
+            if abs(gee.pos_x - curr_x) > 320 or abs(gee.pos_y - curr_y) > 320:
+                geese.remove(gee)
                 
     #RedFox spawn rate
     if (random.random() * 100) < ((4 * 3 + CurrentPhase * 5) ** dt):
