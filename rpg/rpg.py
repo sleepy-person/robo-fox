@@ -151,10 +151,13 @@ def Draw(dt):
     draw.clear()
     
     player.draw()
+    i_health.draw(160, -180)
     draw.filled_rect(180,-180,maxhealth*4,7,5)
     draw.filled_rect(180,-180,health*4,7,11)
+    i_warmth.draw(160, -200)
     draw.filled_rect(180,-200,maxwarmth*4,7,5)
     draw.filled_rect(180,-200,warmth*4,7,11)
+    i_hunger.draw(160, -220)
     sraw.filled_rect(180,-220,maxhunger*4,7,5)
     draw.filled_rect(180,-220,hunger*4,7,11)
     
