@@ -6,6 +6,8 @@ import RetroPy.AB2Cont
 
 p_fox = LoadSprite("/rpg/assets/finalfox.rs8")
 p_foxrun = LoadSprite("/rpg/assets/finalfoxrun.rs8")
+e_redfox = LoadSprite("/rpg/assets/Red_Fox.rs8")
+e_redfoxattack = LoadSprite("/rpg/assets/Red_Fox_Attack.rs8")
 player=gameObj(p_fox,112,120,70,currNdx=0)
 curr_x,curr_y=1024,1024
 prevmove,move,dirr=0,0,0
