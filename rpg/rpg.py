@@ -63,32 +63,6 @@ def Update(dt):
     global CurrentPhase, RandomVariable
     player.update()
     
-    '''move=10
-    if kb.readLeft==0:
-        clampmove(-64*dt,0)
-        dirr=1
-    elif kb.readRight==0:
-        clampmove(64*dt,0)
-        dirr=0
-    else:
-        move-=4
-        
-    if kb.readUp==0:
-        clampmove(0,-64*dt)
-    elif kb.readDown==0:
-        clampmove(0,64*dt)
-    else:
-        move-=4
-
-    player.flip(dirr)
-    
-    if prevmove!=move:
-        if move>5:
-            player.sprite(p_foxrun,70)
-        else:
-            player.sprite(p_fox,70)
-    
-    prevmove=move'''
     move=10
     if kb.readDown == 0:
         player.speed_y = 50
@@ -122,7 +96,12 @@ def Update(dt):
     
     prevmove=move
 
-    
+    if RandomVariable // (16 / dt) == 0:
+        if hunger >= 7:
+            health += 1
+    if RandomVariable // (10 / dt) == 0:
+        if move > 5:
+            hunger -= 1
 
     '''if kb.readB == 0:
         for row in burrow:
@@ -162,7 +141,7 @@ def Update(dt):
             if ag.collider(player):
                 DealDamage(eagle[ag], random.randint(1,4))
     '''            
-    '''
+    
     #Hare spawn rate
     if (random.random() * 100) < ((10 * 3 + CurrentPhase * 8) ** dt):
         hare.append(gameObj(e_hare), randint(128,896), randint(128,896))
@@ -256,7 +235,7 @@ def Update(dt):
                 e.remove(e)    
     
     RandomVariable += 1
-    '''
+    
     
 
 # =======================================================================================
