@@ -1,4 +1,3 @@
-
 from RetroPy.retroPy import rpy, kb, draw, disp, gameObj, LoadSpriteStr, LoadSprite, sprite, LoadMap, sMap, gc
 import os, random, time
 import math
@@ -35,10 +34,10 @@ food=[]
 burrows = []
 health = 100
 maxhealth = 100
-hunger = 60
+hunger = 75
 maxhunger = 100
-warmth = 40
-maxwarmth = 100
+warmth = 750
+maxwarmth = 1000
 '''change this later'''
 
 CurrentPhase = 1
@@ -115,6 +114,7 @@ def Update(dt):
     if RandomVariable % 9 == 0:
         if move > 5:
             hunger -= 1
+        warmth -= 5
 
     '''if kb.readB == 0:
         for row in burrow:
@@ -132,19 +132,22 @@ def Update(dt):
         count=0
         for enemy in enemies:
             if enemy[0].collider(player):
-                print(enemy[0].collider(player))
-                print(0)
+                print(enemies)
+                print(enemy)
                 enemy[2]-=random.randint(1,4)
                 if enemy[2]<=0:
                     enemies.pop(count)
+                    print(0)
             count+=1
         count=0
         for foo in food:
             if foo[0].collider(player):
-                print(foo[0].collider(player))
+                print(foo)
+                print(food)
                 foo[2]-=random.randint(1,4)
                 if foo[2]<=0:
-                    foo.pop(count)
+                    food.pop(count)
+                    print(2)
                     hunger+=20
                     if hunger>100:
                         hunger=100
@@ -194,7 +197,8 @@ def Update(dt):
         count+=1
     
     if health<=0 or warmth<=0 or hunger<=0:
-        rpy.quit()
+        #rpy.quit()
+        pass
     
     RandomVariable += 1
     
@@ -230,10 +234,10 @@ def Draw(dt):
     draw.filled_rect(185,180,maxhealth*4//10,7,5)
     draw.filled_rect(185,180,health*4//10,7,11)
     sprite(i_warmth).draw(0,160, 200,0)
-    draw.filled_rect(185,200,maxwarmth*4//10,7,5)
-    draw.filled_rect(185,200,warmth*4//10,7,11)
+    draw.filled_rect(185,200,maxwarmth*4//100,7,5)
+    draw.filled_rect(185,200,warmth*4//100,7,11)
     sprite(i_hunger).draw(0,160, 220,0)
-    draw.filled_rect(185,220,maxhunger//10*4,7,5)
+    draw.filled_rect(185,220,maxhunger*4//10,7,5)
     draw.filled_rect(185,220,hunger*4//10,7,11)
     
     draw.text(str(dt), 200, 0, 7)
@@ -242,4 +246,3 @@ def Draw(dt):
 # =======================================================================================
 # =======================================================================================               
 rpy.run(Update, Draw) 
-# =======================================================================================
