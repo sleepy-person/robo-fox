@@ -1,3 +1,4 @@
+
 from RetroPy.retroPy import rpy, kb, draw, disp, gameObj, LoadSpriteStr, LoadSprite, sprite, LoadMap, sMap, gc
 import os, random, time
 import math
@@ -75,6 +76,7 @@ def Update(dt):
     global CurrentPhase, RandomVariable
     player.update()
     
+    screen_coords = [disp.cam_pos_x(), disp.cam_pos_y()]
     move=10
     if kb.readDown == 0 and player.pos_y<904:
         player.speed_y = 50
@@ -174,16 +176,40 @@ def Update(dt):
     #Eagle spawn rate
     load("eagle",e_eagle,2)
     
+    
     count=0
     for enemy in enemies:
+        speed = 1
         enemy[0].update()
-        enemy[0].speed_x,enemy[0].speed_y = -player.speed_x, -player.speed_y
+        enemy[0].pos_x = enemy[-2] - screen_coords[0]
+        enemy[0].pos_y = enemy[-1] - screen_coords[1]
         if RandomVariable % 10 == 0:
-            if abs(enemy[0].pos_x-player.pos_x) > 400 or abs(enemy[0].pos_y-player.pos_y) > 400:
+            if abs(enemy[-2]-screen_coords[0]) > 400 or abs(enemy[-1]-screen_coords[1]) > 400:
                 enemies.pop(count)
                 gc.collect()
             RandomVariable=0
         count+=1
+        if enemy[-2] > player.pos_x and enemy[-1] > player.pos_y:
+            enemy[-2] -= speed
+            enemy[-1] -= speed
+        elif enemy[-2] > player.pos_x and enemy[-1] < player.pos_y:
+            enemy[-2] -= speed
+            enemy[-1] += speed
+        elif enemy[-2] < player.pos_x and enemy[-1] > player.pos_y:
+            enemy[-2] += speed
+            enemy[-1] -= speed
+        elif enemy[-2] < player.pos_x and enemy[-1] < player.pos_y:
+            enemy[-2] += speed
+            enemy[-1] += speed
+        elif enemy[-2] == player.pos_x and enemy[-1] < player.pos_y:
+            enemy[-1] += speed
+        elif enemy[-2] == player.pos_x and enemy[-1] > player.pos_y:
+            enemy[-1] -= speed
+        elif enemy[-2] > player.pos_x and enemy[-1] == player.pos_y:
+            enemy[-1] -= speed
+        elif enemy[-2] < player.pos_x and enemy[-1] == player.pos_y:
+            enemy[-1] += speed
+
         
     count=0
     for foo in food:
@@ -213,17 +239,20 @@ def Draw(dt):
 
     player.drawCollider(8)
    
-    draw.text(str(xmap.cell(player.pos_x, player.pos_y)), 500, 500, 8)
-    draw.text(str(xmap.ndx_x(player.pos_x, player.pos_y)) +"," + str(xmap.ndx_y(player.pos_x, player.pos_y)), 2, 210, 7)
+    #draw.text(str(xmap.cell(player.pos_x, player.pos_y)), 500, 500, 8)
+    #draw.text(str(xmap.ndx_x(player.pos_x, player.pos_y)) +"," + str(xmap.ndx_y(player.pos_x, player.pos_y)), 2, 210, 7)
     #draw.text(str(curr_x) +"," + str(curr_y), 2, 220, 8)
    
     draw.text(str(disp.cam_pos_x())+", "+str(disp.cam_pos_y()), 100, 100, 8)
+    draw.text(str(player.pos_x)+", "+str(player.pos_y), 100, 150, 9)
     #draw.text(str(player.pos_x, player.pos_y), -200, -200, 7)
     draw.text(str(dt), 200, 0, 7)
     
     for enemy in enemies:
         enemy[0].draw()
         enemy[0].drawCollider(8)
+        draw.text(str(enemy[-2]) +", "+ str(enemy[-1]),enemy[0].pos_x,enemy[0].pos_y-20,8)
+        draw.text(str(enemy[0].pos_x) + "," + str(enemy[0].pos_y), enemy[0].pos_x, enemy[0].pos_y+20,9)
     for foo in food:
         foo[0].draw()
         foo[0].drawCollider(8)
@@ -246,3 +275,4 @@ def Draw(dt):
 # =======================================================================================
 # =======================================================================================               
 rpy.run(Update, Draw) 
+# =======================================================================================
