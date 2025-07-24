@@ -1,0 +1,171 @@
+from RetroPy.retroPy import rpy, kb, draw, disp, gameObj, LoadSpriteStr, LoadSprite, sprite, LoadMap, sMap, gc
+import os, random, time
+import math
+import RetroPy.AB2Cont
+
+p_fox = LoadSprite("/rpg/assets/fox.rs8")
+p_foxrun = LoadSprite("/rpg/assets/foxrun.rs8")
+p_foxattack = LoadSprite("/rpg/assets/foxattack.rs8")
+b_burrow = LoadSprite("/rpg/assets/Burrow.rs8")
+e_hare = LoadSprite("/rpg/assets/Arctic_Hare.rs8")
+e_bush = LoadSprite("/rpg/assets/bush.rs8")
+e_lemming = LoadSprite("/rpg/assets/Lemming.rs8")
+e_geese = LoadSprite("/rpg/assets/Geese.rs8")
+e_geeseflying = LoadSprite("/rpg/assets/Geese_Flying.rs8")
+e_cod = LoadSprite("/rpg/assets/Cod.rs8")
+e_redfox = LoadSprite("/rpg/assets/Red_Fox.rs8")
+e_redfoxattack = LoadSprite("/rpg/assets/Red_Fox_Attack(rs8).rs8")
+e_owl = LoadSprite("/rpg/assets/Owl.rs8")
+e_owlattack = LoadSprite("/rpg/assets/Owl_Attack.rs8")
+e_eagle = LoadSprite("/rpg/assets/Eagle.rs8")
+e_eagleattack = LoadSprite("/rpg/assets/Eagle_Attack.rs8")
+e_bear = LoadSprite("/rpg/assets/Polar_Bear.rs8")
+e_bearattack = LoadSprite("/rpg/assets/Polar_Bear_Attack.rs8")
+i_health = LoadSprite("/rpg/assets/Health.rs8")
+i_warmth = LoadSprite("/rpg/assets/Fire.rs8")
+i_hunger = LoadSprite("/rpg/assets/Hunger.rs8")
+
+p_tiles = LoadSprite("/rpg/TerrainTiles.rs8")
+p_map = LoadMap("/rpg/map1_final.map")
+xmap = sMap(p_tiles, p_map, 1)
+
+redfox = []
+RandomVariable = 0
+CurrentPhase = 1
+player=gameObj(p_fox,112,120,70,currNdx=0, cam_mode = 1)
+curr_x,curr_y=0,0
+prevmove,move,dirr=0,0,0
+disp.cam_pos(0,0)
+
+player.clamp_x(120,904)
+player.clamp_y(120,904)
+
+def load(animal,sprite,chance):
+    if (random.random() * 100) < ((chance * 3 + CurrentPhase * 5) ** 0.031) and len(redfox)<CurrentPhase*2:
+        tempx, tempy = random.randint(120,904), random.randint(120,904)
+        #tempx,tempy=player.pos_x+(random.randint(-110, -80) if random.random() < 0.5 else random.randint(80, 110)),player.pos_y+(random.randint(-110, -80) if random.random() < 0.5 else random.randint(80, 110))
+        screenx, screeny = tempx - (player.pos_x-240), tempy - (player.pos_y - 240)
+        redfox.append([gameObj(sprite, int(screenx), int(screeny)),animal,50 if animal=="bear" else 20,int(tempx),int(tempy)])
+        #print(redfox[-1][0].pos_x-player.pos_x,redfox[-1][0].pos_y-player.pos_y)
+    count=0
+
+def Update(dt):
+    global dtt, move, prevmove, curr_x, curr_y, dirr, hunger, warmth, health
+    global CurrentPhase, RandomVariable
+    player.update()
+    
+    screen_coords = [disp.cam_pos_x(), disp.cam_pos_y()]
+    move=10
+    if kb.readDown == 0 and player.pos_y<904:
+        player.speed_y = 50
+    elif kb.readUp == 0 and player.pos_y>120:
+        player.speed_y = -50
+    else:
+        player.speed_y = 0
+        move-= 4
+    if kb.readRight == 0 and player.pos_x<904:
+        player.speed_x = 50
+        dirr=0
+    elif kb.readLeft == 0 and player.pos_x>120:
+        player.speed_x = -50
+        dirr=1
+    else:
+        player.speed_x = 0
+        move-= 4
+    player.flip(dirr)
+    disp.cam_pos(player.pos_x - 120, player.pos_y - 120)    
+    
+    if prevmove!=move:
+        if move>5:
+            player.sprite(p_foxrun,70)
+        else:
+            player.sprite(p_fox,70)
+    if prevmove!=move:
+        if move>5:
+            player.sprite(p_foxrun,70)
+        else:
+            player.sprite(p_fox,70)
+    
+    prevmove=move
+
+    for red in redfox:
+            if red[0].collider(player):
+                print(red)
+    
+    if kb.readA == 0:
+        player.sprite(p_foxattack,70)
+        count=0
+        for red in redfox:
+            print(red)
+            if red[0].collider(player):
+                print(redfox)
+                print(red)
+                red[2]-=random.randint(1,4)
+                if red[2]<=0:
+                    red.pop(count)
+                    print(0)
+            count+=1
+        count=0
+        
+    load("redfox",e_redfox,12)
+        
+    count=0
+    for red in redfox:
+        speed = 1
+        red[0].update()
+        red[0].pos_x = red[-2] - screen_coords[0]
+        red[0].pos_y = red[-1] - screen_coords[1]
+        if RandomVariable % 10 == 0:
+            if abs(red[-2]-disp.cam_pos_x()-120) > 400 or abs(red[-1]-disp.cam_pos_y()-120) > 400:
+                redfox.pop(count)
+                gc.collect()
+            RandomVariable=0
+        count+=1
+        if red[-2] > player.pos_x and red[-1] > player.pos_y:
+            red[-2] -= speed
+            red[-1] -= speed
+        elif red[-2] > player.pos_x and red[-1] < player.pos_y:
+            red[-2] -= speed
+            red[-1] += speed
+        elif red[-2] < player.pos_x and red[-1] > player.pos_y:
+            red[-2] += speed
+            red[-1] -= speed
+        elif red[-2] < player.pos_x and red[-1] < player.pos_y:
+            red[-2] += speed
+            red[-1] += speed
+        elif red[-2] == player.pos_x and red[-1] < player.pos_y:
+            red[-1] += speed
+        elif red[-2] == player.pos_x and red[-1] > player.pos_y:
+            red[-1] -= speed
+        elif red[-2] > player.pos_x and red[-1] == player.pos_y:
+            red[-1] -= speed
+        elif red[-2] < player.pos_x and red[-1] == player.pos_y:
+            red[-1] += speed
+            
+def Draw(dt):
+    global dtt, move, curr_x, curr_y
+    draw.clear()
+    
+    xmap.draw(disp.cam_pos_x(), disp.cam_pos_y())
+
+    player.drawCollider(8)
+    player.draw()
+   
+    #draw.text(str(xmap.cell(player.pos_x, player.pos_y)), 500, 500, 8)
+    #draw.text(str(xmap.ndx_x(player.pos_x, player.pos_y)) +"," + str(xmap.ndx_y(player.pos_x, player.pos_y)), 2, 210, 7)
+    #draw.text(str(curr_x) +"," + str(curr_y), 2, 220, 8)
+   
+    draw.text(str(disp.cam_pos_x())+", "+str(disp.cam_pos_y()), 100, 100, 8)
+    draw.text(str(player.pos_x)+", "+str(player.pos_y), 100, 150, 9)
+    #draw.text(str(player.pos_x, player.pos_y), -200, -200, 7)
+    draw.text(str(dt), 200, 0, 7)
+    
+    for red in redfox:
+        red[0].draw()
+        red[0].drawCollider(8)
+        draw.text(str(red[-2]) +", "+ str(red[-1]),red[0].pos_x,red[0].pos_y-10,8)
+        draw.text(str(red[0].pos_x) + "," + str(red[0].pos_y), red[0].pos_x, red[0].pos_y+10,9)
+    
+    draw.text(str(dt), 200, 0, 7)
+    
+rpy.run(Update, Draw) 
