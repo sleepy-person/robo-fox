@@ -1,5 +1,5 @@
 def packarray(arr,filename):
-    assert len(arr) == 128 and all(len(row) == 128 for row in arr), "Array must be 128x128"
+    assert len(arr) == 64 and all(len(row) == 64 for row in arr), "Array must be 64x64"
     flat_arr = [val for row in arr for val in row]
     packed_bytes = bytearray()
     for i in range(0, len(flat_arr), 2):
@@ -19,9 +19,9 @@ def unpackarray(filename):
     for byte in packed_bytes:
         first_val = (byte >> 4) & 0xF # gotta right shift back
         second_val = byte & 0xF
-        flat_arr.extend([first_val, second_val]) # no I didn't know extend existed existed
+        flat_arr.extend([first_val, second_val]) # no I didn't know extend existed
         
-    return [flat_arr[i:i+128] for i in range(0, len(flat_arr), 128)]
+    return [flat_arr[i:i+64] for i in range(0, len(flat_arr), 64)]
 
 if __name__ == "__main__":
     yeet=input("Enter p for pack and u for unpack.").lower()
