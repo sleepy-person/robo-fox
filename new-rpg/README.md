@@ -10,5 +10,4 @@ Comparison:
 - enemies spawn and follow the player
 - it scrollssssss
 
-### NOTE: THE PATHS ASSUME THAT THIS DIRECTORY IS LOCATED IN /RPG.
-### Please rename this directory in local testing to rpg, or just modify all the paths.
+**Note: The file paths assume that this directory is located at /rpg. Please move this directory to that location or modify the file paths in local testing.**
